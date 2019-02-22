@@ -1,0 +1,5 @@
+
+following textures by TenPlus1 (CC BY-SA 3.0):
+  priv_protector_logo.png
+  priv_protector_display.png
+  priv_protector_overlay.png
