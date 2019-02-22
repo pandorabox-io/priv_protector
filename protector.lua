@@ -91,8 +91,6 @@ function minetest.is_protected(pos, digger)
 	if minetest.check_player_privs(digger, {protection_bypass = true}) then
 		return false
 	end
-
-	local xp = xp_redo.get_xp(digger)
 	
 	local nodes = minetest.find_nodes_in_area(
 		{x = pos.x - radius, y = pos.y - radius, z = pos.z - radius},
@@ -106,9 +104,8 @@ function minetest.is_protected(pos, digger)
 		local priv = meta:get_int("priv") or "interact"
 
 		local has_priv = minetest.check_player_privs(digger, priv)
-		local has_bypass = minetest.check_player_privs(digger, "protection_bypass")
 
-		if not can_dig and not has_bypass then
+		if not has_priv then
 			minetest.chat_send_player(digger, "This area is protected with priv '" .. priv .. "'!")
 			return true
 		end
