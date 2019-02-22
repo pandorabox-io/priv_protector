@@ -35,13 +35,7 @@ minetest.register_node("priv_protector:protector", {
 	after_place_node = function(pos, placer)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("owner", placer:get_player_name() or "")
-		update_formspec(meta)
-	end,
-
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local owner = meta:get_string("owner")
-		meta:set_string("priv", get_last_player_user_priv(owner))
+		meta:set_string("priv", get_last_player_user_priv(placer:get_player_name()))
 		update_formspec(meta)
 	end,
 
@@ -50,10 +44,10 @@ minetest.register_node("priv_protector:protector", {
 		local name = sender:get_player_name()
 
 		if name == meta:get_string("owner") then
-			-- ownder
+			-- owner
 			if fields.priv then
-				meta:set_string("priv", priv)
-				set_last_player_user_priv(name, priv)
+				meta:set_string("priv", fields.priv)
+				set_last_player_user_priv(name, fields.priv)
 			end
 
 			update_formspec(meta)
@@ -101,9 +95,11 @@ function minetest.is_protected(pos, digger)
 
 		local meta = minetest.get_meta(nodes[n])
 		local owner = meta:get_string("owner") or ""
-		local priv = meta:get_int("priv") or "interact"
+		local priv = meta:get_string("priv") or "interact"
 
-		local has_priv = minetest.check_player_privs(digger, priv)
+		local privs = {}
+		privs[priv] = true
+		local has_priv = minetest.check_player_privs(digger, privs)
 
 		if not has_priv then
 			minetest.chat_send_player(digger, "This area is protected with priv '" .. priv .. "'!")
