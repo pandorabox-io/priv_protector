@@ -105,9 +105,10 @@ function minetest.is_protected(pos, digger)
 		local owner = meta:get_string("owner") or ""
 		local priv = meta:get_int("priv") or "interact"
 
-		local can_dig = minetest.check_player_privs(digger, priv)
+		local has_priv = minetest.check_player_privs(digger, priv)
+		local has_bypass = minetest.check_player_privs(digger, "protection_bypass")
 
-		if not can_dig then
+		if not can_dig and not has_bypass then
 			minetest.chat_send_player(digger, "This area is protected with priv '" .. priv .. "'!")
 			return true
 		end
