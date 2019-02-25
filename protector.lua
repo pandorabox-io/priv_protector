@@ -1,4 +1,5 @@
 local has_protector_mod = minetest.get_modpath("protector")
+local has_mesecons_mvps_mod = minetest.get_modpath("mesecons_mvps")
 
 local update_formspec = function(meta)
 	local priv = meta:get_string("priv")
@@ -122,4 +123,7 @@ minetest.register_craft({
     recipe = {"default:goldblock", "default:steel_ingot"}
 })
 
+if has_mesecons_mvps_mod then
+	mesecon.register_mvps_stopper("priv_protector:protector")
+end
 
