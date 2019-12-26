@@ -14,3 +14,9 @@ minetest.register_privilege("protect_streets", {
 
 Place the priv_protector block and change the "Privilege" field to `protect_streets` or whatever you want to protect with
 
+# Area integration
+
+Additional `area` mod commands:
+
+* `area_priv_set` Sets a  privilege for the area (the area needs to be opened with `/area_open <id>` for this to work)
+* `area_priv_get` Returns the privilege, if any, required for that area

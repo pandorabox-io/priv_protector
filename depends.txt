@@ -2,3 +2,4 @@ default
 protector?
 doors?
 mesecons_mvps?
+areas?
