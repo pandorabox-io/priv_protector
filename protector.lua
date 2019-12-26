@@ -14,11 +14,11 @@ end
 
 local last_player_priv_map = {}
 
-function get_last_player_user_priv(name)
+local function get_last_player_user_priv(name)
 	return last_player_priv_map[name] or "interact"
 end
 
-function set_last_player_user_priv(name, priv)
+local function set_last_player_user_priv(name, priv)
 	last_player_priv_map[name] = priv
 end
 
@@ -40,7 +40,7 @@ minetest.register_node("priv_protector:protector", {
 		update_formspec(meta)
 	end,
 
-	on_receive_fields = function(pos, formname, fields, sender)
+	on_receive_fields = function(pos, _, fields, sender)
 		local meta = minetest.get_meta(pos)
 		local name = sender:get_player_name()
 
@@ -55,7 +55,7 @@ minetest.register_node("priv_protector:protector", {
 		end
 	end,
 
-	on_punch = function(pos, node, puncher)
+	on_punch = function(pos, _, puncher)
 		if minetest.is_protected(pos, puncher:get_player_name()) then
 			return
 		end
@@ -86,7 +86,7 @@ function minetest.is_protected(pos, digger)
 	if minetest.check_player_privs(digger, {protection_bypass = true}) then
 		return false
 	end
-	
+
 	local nodes = minetest.find_nodes_in_area(
 		{x = pos.x - radius, y = pos.y - radius, z = pos.z - radius},
 		{x = pos.x + radius, y = pos.y + radius, z = pos.z + radius},
@@ -95,7 +95,6 @@ function minetest.is_protected(pos, digger)
 	for n = 1, #nodes do
 
 		local meta = minetest.get_meta(nodes[n])
-		local owner = meta:get_string("owner") or ""
 		local priv = meta:get_string("priv") or "interact"
 
 		local privs = {}
@@ -126,4 +125,3 @@ minetest.register_craft({
 if has_mesecons_mvps_mod then
 	mesecon.register_mvps_stopper("priv_protector:protector")
 end
-
