@@ -38,7 +38,7 @@ local function save_priv_areas()
 	f:close()
 end
 
-load_priv_areas()
+priv_areas = load_priv_areas()
 
 -- chat
 
