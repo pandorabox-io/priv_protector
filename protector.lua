@@ -115,6 +115,32 @@ function minetest.is_protected(pos, digger)
 	return old_is_protected(pos, digger)
 end
 
+if has_protector_mod then
+	protector.tool:register_protector('priv_protector:protector', {
+		nodes = nil, -- Compatible nodes for protector tool, uses same on_place, radius, etc.
+		on_place = function(user, pos, source_pos, nodename)
+
+			-- place protector
+			minetest.set_node(pos, {name = nodename, param2 = 1})
+
+			local meta = minetest.get_meta(pos)
+			local name = user:get_player_name()
+
+			meta:set_string("owner", name)
+
+			-- copy members across if holding sneak when using tool
+			if user:get_player_control().sneak then
+				-- get priv on source protector / set target protector metadata
+				local src_meta = minetest.get_meta(source_pos)
+				local priv = src_meta:get_string("priv") or ""
+				meta:set_string("priv", priv)
+			else
+				meta:set_string("priv", get_last_player_user_priv(name))
+			end
+			update_formspec(meta)
+		end,
+	})
+end
 
 minetest.register_craft({
     output = 'priv_protector:protector',
