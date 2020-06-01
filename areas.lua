@@ -83,3 +83,8 @@ minetest.register_chatcommand("area_priv_get", {
 			return true, "Area " .. id .. " required priv: " .. (priv_areas[id] or "<none>")
     end,
 })
+
+areas:registerOnRemove(function(id)
+  priv_areas[id] = nil
+  save_priv_areas()
+end)
