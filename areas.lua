@@ -46,7 +46,7 @@ minetest.register_chatcommand("area_priv_set", {
     params = "<ID> <priv>",
     description = "Set the required priv for the area",
     func = function(playername, param)
-      local _, _, id_str, priv = string.find(param, "^([^%s]+)%s+([^%s]+)%s*$")
+      local _, _, id_str, priv = string.find(param, "^([^%s]+)%s+([^%s]*)%s*$")
       if id_str == nil then
         return true, "Invalid syntax!"
       end
@@ -63,7 +63,7 @@ minetest.register_chatcommand("area_priv_set", {
 
       priv_areas[id] = priv
       save_priv_areas()
-			return true, "Area " .. id .. " required privilege: " .. priv
+			return true, "Area " .. id .. (priv and (" required privilege: " .. priv) or (" privileges removed"))
     end,
 })
 
