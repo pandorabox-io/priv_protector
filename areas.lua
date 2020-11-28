@@ -43,28 +43,30 @@ priv_areas = load_priv_areas()
 -- chat
 
 minetest.register_chatcommand("area_priv_set", {
-    params = "<ID> <priv>",
-    description = "Set the required priv for the area",
-    func = function(playername, param)
-      local _, _, id_str, priv = string.find(param, "^([^%s]+)%s+([^%s]*)%s*$")
-      if id_str == nil then
-        return true, "Invalid syntax!"
-      end
+	params = "<ID> <priv>",
+	description = "Set the required priv for the area",
+	func = function(playername, param)
+		local matcher = param:gmatch("(%S+)")
+		local id_str = matcher()
+		local priv = matcher()
+		if id_str == nil then
+			return true, "Invalid syntax!"
+		end
 
-      local id = tonumber(id_str)
-      if not id then
-        return true, "area-id is not numeric: " .. id_str
-      end
+		local id = tonumber(id_str)
+		if not id then
+			return true, "area-id is not numeric: " .. id_str
+		end
 
-      if not areas:isAreaOwner(id, playername) and
-        not minetest.check_player_privs(playername, { protection_bypas=true }) then
-        return true, "you are not the owner of area: " .. id
-      end
+		if not areas:isAreaOwner(id, playername) and
+			not minetest.check_player_privs(playername, { protection_bypas=true }) then
+			return true, "you are not the owner of area: " .. id
+		end
 
-      priv_areas[id] = priv
-      save_priv_areas()
-			return true, "Area " .. id .. (priv and (" required privilege: " .. priv) or (" privileges removed"))
-    end,
+		priv_areas[id] = priv
+		save_priv_areas()
+		return true, "Area " .. id .. " required privilege: " .. (priv or "<none>")
+	end,
 })
 
 minetest.register_chatcommand("area_priv_get", {
