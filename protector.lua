@@ -7,7 +7,7 @@ local update_formspec = function(meta)
 
 	meta:set_string("infotext", "Priv Protector: '" .. priv .. "', owner: '" .. owner .. "'")
 	meta:set_string("formspec", "size[6,3;]" ..
-		"field[0,1;6,1;priv;Priv;" .. priv .. "]" ..
+		"field[0,1;6,1;priv;Priv;" .. minetest.formspec_escape(priv) .. "]" ..
 		"button_exit[0,2;6,1;save;Save]"
 	)
 end
