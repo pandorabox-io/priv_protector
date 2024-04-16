@@ -1,5 +1,6 @@
 
 globals = {
+	"priv_protector",
 	"minetest",
 }
 
