@@ -9,7 +9,7 @@ read_globals = {
 		fields = {
 			"gmatch",
 		}
-	}
+	},
 	-- deps
 	"areas",
 	"default",
