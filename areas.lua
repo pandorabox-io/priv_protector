@@ -2,6 +2,10 @@
 -- id -> priv
 local priv_areas = {}
 
+function priv_protector.get_area_priv(id)
+	return priv_areas[id]
+end
+
 -- protection check
 local old_is_protected = minetest.is_protected
 function minetest.is_protected(pos, name)
