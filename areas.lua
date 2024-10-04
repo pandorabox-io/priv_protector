@@ -9,24 +9,19 @@ end
 -- protection check
 local old_is_protected = minetest.is_protected
 function minetest.is_protected(pos, name)
-	if areas.getSmallestAreaAtPos and areas.config.use_smallest_area_precedence then
+	local area_list
+	if areas.config.use_smallest_area_precedence then
 		local _, id = areas:getSmallestAreaAtPos(pos)
-		if id then
-			local required_priv = priv_areas[id]
-			if required_priv and not minetest.check_player_privs(name, required_priv) then
-				-- required privililege not met, protected
-				return true
-			end
-		end
+		area_list = id and { [id] = true } or {}
 	else
-		local area_list = areas:getAreasAtPos(pos)
-		for id in pairs(area_list) do
-			local required_priv = priv_areas[id]
+		area_list = areas:getAreasAtPos(pos)
+	end
+	for id in pairs(area_list) do
+		local required_priv = priv_areas[id]
 
-			if required_priv and not minetest.check_player_privs(name, required_priv) then
-				-- required privililege not met, protected
-				return true
-			end
+		if required_priv and not minetest.check_player_privs(name, required_priv) then
+			-- required privililege not met, protected
+			return true
 		end
 	end
 
