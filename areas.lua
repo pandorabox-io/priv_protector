@@ -69,7 +69,7 @@ minetest.register_chatcommand("area_priv_set", {
 		end
 
 		if not areas:isAreaOwner(id, playername) and
-			not minetest.check_player_privs(playername, { protection_bypas=true }) then
+			not minetest.check_player_privs(playername, { protection_bypass=true }) then
 			return true, "you are not the owner of area: " .. id
 		end
 
